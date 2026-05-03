@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: genai-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: genai
+  template:
+    metadata:
+      labels:
+        app: genai
+    spec:
+      containers:
+        - name: genai-container
+          image: 640129503214.dkr.ecr.ap-south-1.amazonaws.com/genai-app:latest
+          ports:
+            - containerPort: 5000
+          env:
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: openai-secret
+                  key: OPENAI_API_KEY
